@@ -1,5 +1,9 @@
 package level
 
+import (
+	"github.com/wibbe/glh/math"
+)
+
 const (
 	SectorCount = 1024
 	WallCount   = 1024 * 8
@@ -18,14 +22,14 @@ type Sector struct {
 }
 
 type Wall struct {
-	x, y                   float32
+	pos                    math.Vector2
 	texture                uint16
 	texRepeatX, texRepeatY float32
 	texOffsetX, texOffsetY float32
 }
 
 type Entity struct {
-	x, y       float32
+	pos        math.Vector2
 	kind       uint8
 	arg1, arg2 uint32
 }
