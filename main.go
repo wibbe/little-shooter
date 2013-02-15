@@ -1,11 +1,18 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/go-gl/glfw"
 	"github.com/wibbe/glh/gfx"
 	"os"
 )
+
+const (
+	FrameTick float64 = 1.0 / 20.0
+)
+
+var connectionAddress = flag.String("connect", "localhost", "Server IP address")
 
 func main() {
 	fmt.Printf("Little Shooter\n")
@@ -31,10 +38,21 @@ func main() {
 		return
 	}
 
+	game := NewGame(*connectionAddress)
+
+	glfw.SetTime(0.0)
+	simulationTime := 0.0
+
 	continueOn := true
 	for continueOn {
-		ctx.Clear(true, true, true)
+		gameTime := glfw.Time()
 
+		for simulationTime < gameTime {
+			game.Tick(FrameTick)
+			simulationTime += FrameTick
+		}
+
+		ctx.Clear(true, true, true)
 		glfw.SwapBuffers()
 
 		continueOn = glfw.WindowParam(glfw.Opened) == 1 && glfw.Key(glfw.KeyEsc) == glfw.KeyRelease
