@@ -8,14 +8,18 @@ import (
 	"os"
 )
 
-const (
-	FrameTick float64 = 1.0 / 20.0
-)
-
 var connectionAddress = flag.String("connect", "localhost", "Server IP address")
+var levelToLoad = flag.String("level", "", "Level to load (Only use if you start a server)")
 
 func main() {
 	fmt.Printf("Little Shooter\n")
+
+	flag.Parse()
+
+	if *connectionAddress == "localhost" && *levelToLoad == "" {
+		fmt.Fprintf(os.Stderr, "Must specify a level to load when running a server")
+		return
+	}
 
 	glfw.Init()
 	defer glfw.Terminate()
