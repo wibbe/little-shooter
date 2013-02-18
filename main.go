@@ -10,6 +10,7 @@ import (
 
 var connectionAddress = flag.String("connect", "localhost", "Server IP address")
 var levelToLoad = flag.String("level", "", "Level to load (Only use if you start a server)")
+var editMode = flag.Bool("edit", false, "Enable level editing")
 
 func main() {
 	fmt.Printf("Little Shooter\n")
@@ -42,7 +43,7 @@ func main() {
 		return
 	}
 
-	game := NewGame(*connectionAddress)
+	game := NewGame(*connectionAddress, ctx)
 
 	glfw.SetTime(0.0)
 	simulationTime := 0.0
@@ -56,7 +57,8 @@ func main() {
 			simulationTime += FrameTick
 		}
 
-		ctx.Clear(true, true, true)
+		game.Draw()
+
 		glfw.SwapBuffers()
 
 		continueOn = glfw.WindowParam(glfw.Opened) == 1 && glfw.Key(glfw.KeyEsc) == glfw.KeyRelease
